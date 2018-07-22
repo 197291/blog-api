@@ -6,5 +6,5 @@ app.listen(config.port, () => {
 });
 
 process.on('uncaughtException', (err) => {
-  console.log('uncaughtException', err);
+  console.log('uncaughtException ', err);
 })

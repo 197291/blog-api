@@ -11,6 +11,13 @@
 * [sequelize](http://docs.sequelizejs.com/)
 * [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
 
+For database is used postgresql.
+
+Command for uploading database: 
+```
+psql -h hostname -d databasename -U username -f <path-to-file>/db.sql
+```
+
 # Installation #
 
 ```
