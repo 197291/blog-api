@@ -1,39 +1,14 @@
 const express = require('express');
 
-const router = express.Router();
 import * as Controller from '../controller';
+import { verifyToken } from '../services/auth';
 
-router.get('/:id',  async function(req, res, next){
-  try {
-    const id = req.params.id;
-    const response = await Controller.posts.getPostsByUserId(id);
+const router = express.Router();
 
-    res.status(200).send(response);
-  } catch(err) {
-    next(new Error(err.message));
-  }
-})
+router.get('/:id', Controller.posts.getPostsByUserId);
 
-router.get('/:id/friends',  async function(req, res, next){
-  try {
-    const id = req.params.id;
-    const response = await Controller.posts.getPostsFriends(id);
-    
-    res.status(200).send(response);
-  } catch (err) {
-    next(new Error(err.message));
-  }
-})
+router.get('/:id/friends', Controller.posts.getPostsFriends);
 
-router.post('/',  async function(req, res, next){
-  try {
-    const data = req.body;
-    const response = await Controller.posts.createNewPost(data);
+router.post('/', Controller.posts.createNewPost);
 
-    res.status(201).send(response);
-  } catch(err) {
-    next(new Error(err.message));
-  }
-})
-
-export {router as posts}
+export { router as posts };

@@ -6,49 +6,42 @@ const JwtStrategy = passportJWT.Strategy;
 
 export default function (sequelize, DataTypes) {
 
- const User =  sequelize.define('User', {
-  name: DataTypes.STRING,
-  email:{
-    type: DataTypes.STRING,
-    field: 'email'
-  },
-  password:{
-    type: DataTypes.STRING,
-    field: 'password'
-  },
-  avatar:{
-    type: DataTypes.STRING,
-    field: 'avatar'
-  },
-}, {
-  tableName: 'users',
-  timestamps: false
-})
+  const User =  sequelize.define('User', {
+    name: DataTypes.STRING,
+    email:{
+      type: DataTypes.STRING,
+      field: 'email'
+    },
+    password:{
+      type: DataTypes.STRING,
+      field: 'password'
+    },
+    avatar:{
+      type: DataTypes.STRING,
+      field: 'avatar'
+    },
+  }, {
+    tableName: 'users',
+    timestamps: false
+  })
 
 
-User.associate = function (models) {
-  models.User.hasMany(models.Post, {
-    onDelete: "CASCADE",
-    foreignKey: {
-      name: 'user_id',
-      allowNull: false
-    }
-  });
-  models.User.belongsTo(models.Follower, {
-    onDelete: "CASCADE",
-    foreignKey: {
-      name: 'follower',
-      allowNull: false
-    }
-  });
-  models.User.belongsTo(models.Follower, {
-    onDelete: "CASCADE",
-    foreignKey: {
-      name: 'following',
-      allowNull: false
-    }
-  });
-};
+  User.associate = function (models) {
 
-return User;
+    models.User.belongsToMany(models.User, {
+      as: 'userFollowing',
+      foreignKey: 'following',
+      onDelete: "CASCADE",
+      through: models.Follower,
+    });
+    models.User.belongsToMany(models.User, {
+      as: 'userFollower',
+      foreignKey: 'follower',
+      onDelete: "CASCADE",
+      through: models.Follower,
+    });
+  };
+
+  return User;
+
 }

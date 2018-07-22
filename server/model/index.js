@@ -1,10 +1,12 @@
 import fs from "fs";
 import path from "path";
 import Sequelize from 'sequelize';;
-const  env = process.env.NODE_ENV || "development";
-import config from '../config/config';
-let sequelize;
 import moment from 'moment';
+
+import config from '../config/config';
+
+const env = process.env.NODE_ENV || "development";
+let sequelize;
 
 if (process.env.DATABASE_URL) {
    sequelize = new Sequelize(process.env.DATABASE_URL,config);
@@ -23,7 +25,7 @@ fs
     return (file.indexOf(".") !== 0) && (file !== "index.js");
   })
   .forEach( file => {
-    const model = sequelize['import'](path.join(__dirname, file));
+    const model = sequelize.import(path.join(__dirname, file));
     db[model.name] = model;
   });
 

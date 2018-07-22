@@ -1,10 +1,12 @@
-import logger from './logger.js'
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
+
 import router from '../routes';
+import logger from './loggerMorgan';
 import passport from '../services/passport';
+
 const app = express();
 
 // Enable CORS with various options
@@ -24,13 +26,14 @@ app.use(bodyParser.json({limit: '10mb'}));
 app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
 app.use(bodyParser.raw({ type: 'application/yaml' }));
 
-app.use('/\/((?!auth).)*/', passport.authenticate('jwt', {session:false}), function(req, res, next){
-  console.log('hello auth success', req);
-  next();
-});
+// app.use('/\/((?!auth).)*/', passport.authenticate('jwt', {session:false}), function(req, res, next){
+//   console.log('hello auth success', req);
+//   next();
+// });
 
 app.use('/', express.static('public'));
-app.use('/api/v1', router);
+app.use('/api/v1', router.unprotected);
+app.use('/api/v1', passport.authenticate('jwt', { session: false }), router.protected);
 
 app.use(function(req, res, next) {
   const err = new Error('Not Found');
@@ -43,7 +46,9 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
   app.use(function(error, req, res, next) {
     res.status(error.status || 500);
-    res.send({message: error.message, error})
+    console.log('Error from middleware', error);
+    
+    res.send({message: error.message, error});
   });
 }
 

@@ -1,5 +1,0 @@
-::1 - - [31/May/2018:17:29:19 +0000] "GET / HTTP/1.1" 304 - "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.167 Safari/537.36"
-::1 - - [31/May/2018:17:29:20 +0000] "GET /favicon.ico HTTP/1.1" 404 46 "http://localhost:4000/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.167 Safari/537.36"
-::1 - - [31/May/2018:17:29:27 +0000] "GET /api/posts HTTP/1.1" 404 46 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.167 Safari/537.36"
-::1 - - [31/May/2018:17:30:25 +0000] "GET /api/posts/1 HTTP/1.1" 200 2125 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.167 Safari/537.36"
-::1 - - [01/Jun/2018:09:53:35 +0000] "GET / HTTP/1.1" 304 - "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.167 Safari/537.36"

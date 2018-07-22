@@ -23,6 +23,23 @@ export default function (sequelize, DataTypes){
     tableName: 'followers',
     timestamps: false
   })
+
+  Follower.associate = function (models) {
+
+    models.Follower.belongsTo(models.User, {
+      onDelete: "CASCADE",
+      targetKey: 'id',
+      foreignKey: 'follower',
+      as: 'userFollower'
+    });
+
+    models.Follower.belongsTo(models.User, {
+      onDelete: "CASCADE",
+      targetKey: 'id',
+      foreignKey: 'following',
+      as: 'userFollowing'
+    });
+  };
   
   return Follower;
-  }
+}

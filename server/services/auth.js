@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+
 import config from '../config/config';
 
 export function signToken(user_id) {
@@ -6,8 +7,10 @@ export function signToken(user_id) {
 }
 
 export function verifyToken(req, res, next) {
-  jwt.verify(token, config.securityPhrase, function(err, decoded){
-    req._user = decoded;
+  const token = req.headers.authorization;
+
+  jwt.verify(token, config.securityPhrase, (err, decoded) => {
+    req.user = decoded.id;
     next(err)
   });
 }

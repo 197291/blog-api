@@ -26,8 +26,9 @@ Post.associate = function (models) {
     foreignKey: {
       allowNull: false,
       name: 'user_id'
-    }
+    },
+    targetKey: 'id'
   });
 };
-return Post;
+  return Post;
 }

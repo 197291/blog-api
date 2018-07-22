@@ -1,15 +1,19 @@
 const express = require('express');
 
-const router = express.Router();
+const routerProtected = express.Router();
+const routerUnprotected = express.Router();
 
 import { posts } from './posts';
 import { users } from './users';
 import { auth } from './auth';
 import { followers } from './followers';
 
-router.use('/posts', posts);
-router.use('/users', users);
-router.use('/followers', followers);
-router.use('/auth', auth);
+routerProtected.use('/posts', posts);
+routerProtected.use('/users', users);
+routerProtected.use('/followers', followers);
+routerUnprotected.use('/auth', auth);
 
-export default router;
+export default {
+  protected: routerProtected,
+  unprotected: routerUnprotected
+};

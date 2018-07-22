@@ -1,15 +1,18 @@
 import db from '../model';
+import loggerW from '../config/loggerWinston';
 
 export async function getUsersByName(req, res, next) {
 
-    const userId = req.query.userId;
-    const char = req.query.char;
+    const userId = req.user;
+    const char = req.query.name;
 
     try {
       
       const users = await db.sequelize.query(
-      `SELECT users.id, name, folowers.id AS followerID FROM users 
-      LEFT JOIN followers ON :userId = follower AND following = users.id
+      `SELECT users.id, name, followers.id AS followerID FROM users 
+      LEFT JOIN followers 
+      ON users.id = follower AND following=:userId OR following = users.id 
+      AND follower = :userId 
       WHERE users.name ILIKE :char AND NOT users.id=:userId`, 
         { 
           type: db.sequelize.QueryTypes.SELECT,
@@ -24,6 +27,8 @@ export async function getUsersByName(req, res, next) {
       })
 
     } catch (err) {
+      
+      loggerW.error(err);
       next(new Error(err.message))
     }
 }

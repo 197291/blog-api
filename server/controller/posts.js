@@ -1,35 +1,49 @@
 import db from '../model';
+import loggerW from '../config/loggerWinston';
 
-export async function getPostsByUserId(id){
+export async function getPostsByUserId(req, res, next){
 
-  const posts = await db.Post
-    .findAll({
-      where: {
-        user_id: id
-      }
-  });
-  return posts;
-}
-
-export async function getPostsFriends(id) {
-    try {
-      const posts = await db.sequelize.query(
-        `SELECT * FROM posts RIGHT JOIN users ON posts.user_id=users.id WHERE
-        user_id IN (SELECT following FROM followers WHERE folower=:id);`, 
-        { 
-          type: db.sequelize.QueryTypes.SELECT,
-          replacements: { id }
-        }
-      )
-      return posts;
-    } catch (err) {
-      throw err
-    }
-}
-
-export async function createNewPost(data) {
   try {
-    const posts = await db.sequelize.query(
+    const id = req.params.id;
+    const response = await db.Post.findAll({
+      where: { user_id: id }
+    });
+
+    res.status(200).send(response);
+
+  } catch(err) {
+    
+    loggerW.log('error', err);
+    next(new Error(err.message));
+  }
+
+}
+
+export async function getPostsFriends(req, res, next) {
+  try {
+    const id = req.params.id;
+    const response = await db.sequelize.query(
+      `SELECT * FROM posts RIGHT JOIN users ON posts.user_id=users.id WHERE
+      user_id IN (SELECT following FROM followers WHERE follower=:id);`, 
+      { 
+        type: db.sequelize.QueryTypes.SELECT,
+        replacements: { id }
+      }
+    )
+    
+    res.status(200).send(response);
+    
+  } catch (err) {
+
+    loggerW.error(err);
+    next(new Error(err.message));
+  }
+}
+
+export async function createNewPost(req, res, next) {
+  try {
+    const data = req.body;
+    const response = await db.sequelize.query(
       `INSERT INTO posts (user_id, title, content, date) 
         VALUES (:user_id, :title, :content, :date)`, 
       { 
@@ -42,8 +56,12 @@ export async function createNewPost(data) {
         }
       }
     )
-    return posts;
-  } catch (err) {
-    next(new Error(err.message))
+
+    res.status(201).send(response);
+
+  } catch(err) {
+    
+    loggerW.error(err);
+    next(new Error(err.message));
   }
 }
