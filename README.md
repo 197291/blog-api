@@ -13,16 +13,17 @@
 
 For database is used postgresql.
 
-Command for uploading database: 
-```
-psql -h hostname -d databasename -U username -f <path-to-file>/db.sql
-```
 
 # Installation #
 
 ```
 git clone git@github.com:197291/blog-api.git
 cd blog-api && npm install
+```
+
+Command for uploading database: 
+```
+psql -h hostname -d databasename -U username -f <path-to-file>/db.sql
 ```
 
 # Running the application #
